@@ -3,6 +3,7 @@ function game(){
     let activePlayer = playerArray[0];
     const playerTurn = document.querySelector('p');
     playerTurn.textContent = `${activePlayer.getName()}'s turn`
+    let winner = false;
 
     const getActivePlayer = () => activePlayer;
 
@@ -15,23 +16,27 @@ function game(){
         }
     }
 
-    const printNewRound = () => {
-        gameBoard.printBoard();
-        console.log(`${getActivePlayer().getName()}'s turn.`);
-    }
 
     const playRound = (num) => {
-        
-        if(gameBoard.getSymbol(num) == ''){
-            playerTurn.textContent = `${start.getActivePlayer().getName()}'s turn`
-            gameBoard.setSymbol(num, getActivePlayer().getSymbol());
-            checkWinner();
-            switchPlayerTurn();
-            printNewRound()
-
+        if(winner == true){
+            playerTurn.textContent = `${getActivePlayer().getName()} Wins`;
         }
+
         else{
-            console.log('position taken');
+            if(gameBoard.getSymbol(num) == ''){
+                playerTurn.textContent = `${start.getActivePlayer().getName()}'s turn`
+                gameBoard.setSymbol(num, getActivePlayer().getSymbol());
+                winner = checkWinner();
+                if(winner == false){  
+                    switchPlayerTurn();
+                }
+                else{
+                    playerTurn.textContent = `${getActivePlayer().getName()} Wins`;
+                }
+            }
+            else{
+                console.log('position taken');
+            }
         }
     }
 
@@ -78,8 +83,6 @@ function game(){
         return false;
     }
 
-    printNewRound();
-
     return{ playRound, getActivePlayer }    
 }
 
@@ -111,12 +114,6 @@ const gameBoard = (() => {
     const getSymbol = (num) =>{
         return board[num]
     }
-    
-    const printBoard = () => {
-        console.log(board[0], board[1], board[2]);
-        console.log(board[3], board[4], board[5]);
-        console.log(board[6], board[7], board[8]);
-    }
 
     const checkEndGame = () => {
         let openSpaces = 0;
@@ -131,14 +128,13 @@ const gameBoard = (() => {
         return false
     }
 
-    return { reset, getBoard, setSymbol, getSymbol, printBoard, checkEndGame };
+    return { reset, getBoard, setSymbol, getSymbol, checkEndGame };
 })();
 
 const start = game();
 
 const gridItemsArray = document.querySelectorAll('.grid-items');
 for(let i = 0; i < 9; i++){
-    console.log(gridItemsArray[i]);
     gridItemsArray[i].addEventListener('click', () => {
         gridItemsArray[i].textContent = start.getActivePlayer().getSymbol();
         start.playRound(i);
