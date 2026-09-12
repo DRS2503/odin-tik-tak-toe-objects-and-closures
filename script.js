@@ -1,7 +1,5 @@
 function game(){
-
-    const playerArray = [player("player1", "x"), player("player2", "o")];
-    
+    const playerArray = [player("player1", "x"), player("player2", "o")]; 
     let activePlayer = playerArray[0];
 
     const getActivePlayer = () => activePlayer;
@@ -21,7 +19,8 @@ function game(){
     }
 
     const playRound = (num) => {
-        if(gameBoard.getSymbol(num) == 'n'){
+        
+        if(gameBoard.getSymbol(num) == ''){
             console.log(`${getActivePlayer().getName()} placed ${getActivePlayer().getSymbol()}`);
             gameBoard.setSymbol(num, getActivePlayer().getSymbol());
             checkWinner();
@@ -101,7 +100,7 @@ function player(name, symbol){
 
 const gameBoard = (() => {
     let board = [];
-    for(let i = 0; i < 9; i++){board[i] = "n";}
+    for(let i = 0; i < 9; i++){board[i] = "";}
 
     const reset = () => {
         for(let i = 0; i < 9; i++){board[i] = "n";}
@@ -130,11 +129,9 @@ const gameBoard = (() => {
                 openSpaces++;
             }
             if(openSpaces > 0){
-                console.log('the game continues')
                 return true;
             }
         }
-        console.log('the game has concluded');
         return false
     }
 
@@ -142,12 +139,12 @@ const gameBoard = (() => {
 })();
 
 const start = game();
-start.playRound(0);
-start.playRound(4);
-start.playRound(2);
-start.playRound(1);
-start.playRound(6);
-start.playRound(3);
-start.playRound(5);
-start.playRound(8);
-start.playRound(7);
+
+const gridItemsArray = document.querySelectorAll('.grid-items');
+for(let i = 0; i < 9; i++){
+    console.log(gridItemsArray[i]);
+    gridItemsArray[i].addEventListener('click', () => {
+        gridItemsArray[i].textContent = activePlayer().getSymbol();
+        gameBoard.setSymbol(i, activePlayer().getSymbol());
+    })
+}

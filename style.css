@@ -1,3 +1,32 @@
-body{
-    background-color: black;
+header{
+    width: 100vw;
+    justify-items: center;
+}
+
+.flex-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main{
+    justify-items: center;
+}
+
+#grid-container{
+    display: grid;
+    width: 400px;
+    height: 400px;
+    background-color: lightgray;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    border: 2px solid black;
+}
+
+.grid-items{
+    border: 2px solid black;
+}
+
+button{
+    display: block;
 }
